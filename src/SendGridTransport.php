@@ -7,6 +7,7 @@ use SendGrid;
 use SendGrid\Mail\Mail;
 use Swift_Events_EventListener;
 use Swift_Mime_SimpleMessage;
+use SendGrid\Response;
 
 class SendGridTransport extends Transport
 {
@@ -27,9 +28,7 @@ class SendGridTransport extends Transport
                 $this->toSendGridMail($message)
             );
 
-            print $response->statusCode() . "\n";
-
-            print $response->body() . "\n";
+            $this->persistSendGridResponse($response);
         } catch (\Exception $e) {
             echo 'Caught exception: '. $e->getMessage() ."\n";
         }
@@ -67,5 +66,12 @@ class SendGridTransport extends Transport
         [$email, $name] = $this->from;
 
         $mail->setFrom($email, $name);
+    }
+
+    private function persistSendGridResponse(Response $response)
+    {
+        SendGridNotification::create([
+            'send_grid_message_id' => $response->headers($assoc = true)['X-Message-Id'],
+        ]);
     }
 }
