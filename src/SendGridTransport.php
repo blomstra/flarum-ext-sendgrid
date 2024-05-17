@@ -12,9 +12,12 @@ class SendGridTransport extends Transport
 {
     private SendGrid $client;
 
-    public function __construct(SendGrid $client)
+    private array $from;
+
+    public function __construct(SendGrid $client, array $from)
     {
         $this->client = $client;
+        $this->from = $from;
     }
 
     public function send(Swift_Mime_SimpleMessage $message, &$failedRecipients = null)
@@ -34,35 +37,35 @@ class SendGridTransport extends Transport
         return 1;
     }
 
-    private function getFrom(Swift_Mime_SimpleMessage $message): array
-    {
-        $from = $message->getFrom();
-
-        return [
-            $email = array_keys($from)[0],
-            $name = array_values($from)[0],
-        ];
-    }
-
     private function toSendGridMail(Swift_Mime_SimpleMessage $message): Mail
     {
-        $email = new Mail();
+        $mail = new Mail();
 
-        [$email, $name] = $this->getFrom($message);
+        $mail->setSubject($message->getSubject());
 
-        $email->setFrom($email, $name);
+        $this->setFrom($mail);
 
-        $email->setSubject($message->getSubject());
+        foreach ($message->getTo() as $email=> $name) {
+            $mail->addTo($email);
+        }
 
-        $email->addTo("jaggy@hey.com", "Jaggy Gauran");
+        foreach ($message->getCc() as $email=> $name) {
+            $mail->addCc($email, $name);
+        }
 
-        $email->addContent("text/plain", "and easy to do anywhere, even with PHP");
+        foreach ($message->getBcc() as $email=> $name) {
+            $mail->addCc($email, $name);
+        }
 
-        $email->addContent(
-            $message->getContentType(),
-            "text/html", "<strong>and easy to do anywhere, even with PHP</strong>"
-        );
+        $mail->addContent($message->getContentType(), $message->getBody());
 
-        return $email;
+        return $mail;
+    }
+
+    private function setFrom(Mail $mail)
+    {
+        [$email, $name] = $this->from;
+
+        $mail->setFrom($email, $name);
     }
 }

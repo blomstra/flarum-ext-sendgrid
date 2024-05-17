@@ -19,12 +19,9 @@ class SendGridDriver implements DriverInterface
     public function availableSettings(): array
     {
         return [
-            'mail_sendgrid_secret' => '', // the secret key
-            'mail_sendgrid_domain' => '', // the API base URL
-            'mail_sendgrid_region' => [ // region's endpoint
-                'api.mailgun.net' => 'US',
-                'api.eu.mailgun.net' => 'EU',
-            ],
+            'mail_sendgrid_secret' => '',
+            'mail_sendgrid_from_email' => '',
+            'mail_sendgrid_from_name' => '',
         ];
     }
 
@@ -32,8 +29,8 @@ class SendGridDriver implements DriverInterface
     {
         return $validator->make($settings->all(), [
             'mail_sendgrid_secret' => 'required',
-            // 'mail_sendgrid_domain' => 'required|regex:/^(?!\-)(?:[a-zA-Z\d\-]{0,62}[a-zA-Z\d]\.){1,126}(?!\d+)[a-zA-Z\d]{1,63}$/',
-            // 'mail_sendgrid_region' => 'required|in:api.mailgun.net,api.eu.mailgun.net',
+            'mail_sendgrid_from_email' => 'required',
+            'mail_sendgrid_from_name' => 'required',
         ])->errors();
     }
 
@@ -45,7 +42,8 @@ class SendGridDriver implements DriverInterface
     public function buildTransport(SettingsRepositoryInterface $settings): Swift_Transport
     {
         return new SendGridTransport(
-            new SendGrid($settings->get('mail_sendgrid_secret'))
+            new SendGrid($settings->get('mail_sendgrid_secret')),
+            [$settings->get('mail_sendgrid_from_email'), $settings->get('mail_sendgrid_from_email')],
         );
     }
 }
