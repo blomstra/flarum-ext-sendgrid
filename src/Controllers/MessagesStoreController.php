@@ -2,7 +2,7 @@
 
 namespace Blomstra\FlarumSendGrid\Controllers;
 
-use Blomstra\FlarumSendGrid\SendGridNotification;
+use Blomstra\FlarumSendGrid\Models\SendGridMessage;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -27,8 +27,10 @@ class MessagesStoreController implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        $notification = SendGridNotification::query()
-            ->where('send_grid_message_id', Arr::get($request->getParsedBody(), '0.sg_event_id'))
+        $this->logger->info(Arr::get($request->getParsedBody(), '0.sg_message_id'));
+
+        $notification = SendGridMessage::query()
+            ->where('external_id', Arr::get($request->getParsedBody(), '0.sg_message_id'))
             ->first();
 
         if (! $notification) {

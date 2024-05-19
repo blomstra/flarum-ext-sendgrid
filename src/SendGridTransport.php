@@ -69,8 +69,8 @@ class SendGridTransport extends Transport
 
     private function persistSendGridResponse(Response $response)
     {
-        SendGridNotification::create([
-            'send_grid_message_id' => $response->headers($assoc = true)['X-Message-Id'],
+        SendGridMessage::create([
+            'external_id' => $response->headers($assoc = true)['X-Message-Id'],
         ]);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-use Blomstra\FlarumSendGrid\SendGridNotification;
+use Blomstra\FlarumSendGrid\Models\SendGridMessage;
 use Flarum\Testing\integration\TestCase;
 
 class MessagesStoreControllerTest extends TestCase
@@ -21,7 +21,7 @@ class MessagesStoreControllerTest extends TestCase
             $this->database()->table('send_grid_notifications')->count()
         );
         var_dump(
-            SendGridNotification::all()->toArray()
+            SendGridMessage::all()->toArray()
         );
 
         var_dump(

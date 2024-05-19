@@ -16,11 +16,11 @@ return Migration::createTable(
     'send_grid_events',
     function (Blueprint $table) {
         $table->increments('id');
-        $table->unsignedInteger('send_grid_notification_id');
+        $table->unsignedInteger('send_grid_message_id');
         $table->string('event');
         $table->unsignedBigInteger('timestamp');
         $table->timestamps();
 
-        $table->foreign('send_grid_notification_id')->references('id')->on('send_grid_notifications')->onDelete('cascade');
+        $table->foreign('send_grid_message_id')->references('id')->on('send_grid_messages')->onDelete('cascade');
     }
 );

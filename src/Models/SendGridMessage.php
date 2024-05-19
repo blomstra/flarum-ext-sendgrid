@@ -1,16 +1,20 @@
 <?php
 
-namespace Blomstra\FlarumSendGrid;
+namespace Blomstra\FlarumSendGrid\Models;
 
 use Flarum\Database\AbstractModel;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
-class SendGridNotification extends AbstractModel
+class SendGridMessage extends AbstractModel
 {
-    protected $table = 'send_grid_notifications';
+    protected $table = 'send_grid_messages';
 
     protected $guarded = [];
+
+    public function scopeStatus()
+    {
+    }
 
     public function events(): HasMany
     {

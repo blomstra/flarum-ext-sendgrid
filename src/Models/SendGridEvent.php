@@ -1,6 +1,6 @@
 <?php
 
-namespace Blomstra\FlarumSendGrid;
+namespace Blomstra\FlarumSendGrid\Models;
 
 use Flarum\Database\AbstractModel;
 
