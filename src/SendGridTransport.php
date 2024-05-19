@@ -2,6 +2,7 @@
 
 namespace Blomstra\FlarumSendGrid;
 
+use Blomstra\FlarumSendGrid\Models\SendGridMessage;
 use Illuminate\Mail\Transport\Transport;
 use SendGrid;
 use SendGrid\Mail\Mail;
