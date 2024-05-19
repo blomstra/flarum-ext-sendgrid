@@ -12,17 +12,13 @@ class SendGridMessage extends AbstractModel
 
     protected $guarded = [];
 
-    public function scopeStatus()
-    {
-    }
-
     public function events(): HasMany
     {
         return $this->hasMany(SendGridEvent::class);
     }
 
-    public function latestEvent(): HasOne
+    public function latestStatus(): HasOne
     {
-        return $this->hasOne(SendGridEvent::class)->latest('timestamp');
+        return $this->hasOne(SendGridEvent::class)->status()->latest('timestamp');
     }
 }

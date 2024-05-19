@@ -16,10 +16,6 @@ class MessagesStoreController implements RequestHandlerInterface
 {
     private LoggerInterface $logger;
 
-    const SEND_GRID_STATUSES = ['delivered', 'processed', 'bounce', 'dropped', 'deferred'];
-
-    const SEND_GRID_EVENTS = ['click', 'open', 'spamreport', 'unsubscribe', 'group_unsubscribe', 'group_resubscribe'];
-
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -34,13 +30,13 @@ class MessagesStoreController implements RequestHandlerInterface
             ->first();
 
         if (! $notification) {
-            return new JsonResponse(['message' => 'SendGrid notification not found.'], $status = 404);
+            return new JsonResponse([
+                'message' => 'SendGrid notification not found',
+            ], $status = 404);
         }
 
         $notification->events()->createMany(
-            Collection::make($request->getParsedBody())->filter(function ($item) {
-                return in_array($item['event'], self::SEND_GRID_STATUSES);
-            })->map(function ($item) {
+            Collection::make($request->getParsedBody())->map(function ($item) {
                 return [
                     'event' => $item['event'],
                     'timestamp' => $item['timestamp'],
@@ -50,6 +46,8 @@ class MessagesStoreController implements RequestHandlerInterface
             })
         );
 
-        return new JsonResponse(['message' => 'SendGrid events saved'], $status = 201);
+        return new JsonResponse([
+            'message' => 'SendGrid events saved',
+        ], $status = 201);
     }
 }
