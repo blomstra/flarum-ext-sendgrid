@@ -73,7 +73,8 @@
         "test:setup": "Sets up a database for use with integration tests. Execute this only once."
     },
     "require-dev": {
-        "flarum/testing": "^1.0.0",
-        "laravel/pint": "^1.15"
+        "flarum/testing": "^1.0",
+        "laravel/pint": "^1.15",
+        "symfony/var-dumper": "^6.4"
     }
 }

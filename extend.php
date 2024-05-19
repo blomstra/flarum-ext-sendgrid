@@ -16,7 +16,9 @@ use Flarum\Extend;
 
 return [
     (new Extend\Mail())->driver('sendgrid', SendGridDriver::class),
-    (new Extend\Routes('api'))->post('/flarum-sendgrid/hooks/messages', 'flarum-sendgrid.hooks.messages.store', MessagesStoreController::class),
+    (new Extend\Csrf())->exemptRoute('flarum-sendgrid.hooks.messages.store'),
+    (new Extend\Routes('api'))
+        ->post('/flarum-sendgrid/hooks/messages', 'flarum-sendgrid.hooks.messages.store', MessagesStoreController::class),
     //    (new Extend\Frontend('forum'))
     //        ->js(__DIR__.'/js/dist/forum.js')
     //        ->css(__DIR__.'/less/forum.less'),
