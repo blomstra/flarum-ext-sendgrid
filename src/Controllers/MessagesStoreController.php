@@ -2,6 +2,11 @@
 
 namespace Blomstra\FlarumSendGrid\Controllers;
 
+use Blomstra\FlarumSendGrid\SendGridNotification;
+use Carbon\CarbonImmutable;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
@@ -11,6 +16,10 @@ class MessagesStoreController implements RequestHandlerInterface
 {
     private LoggerInterface $logger;
 
+    const SEND_GRID_STATUSES = ['delivered', 'processed', 'bounce', 'dropped', 'deferred'];
+
+    const SEND_GRID_EVENTS = ['click', 'open', 'spamreport', 'unsubscribe', 'group_unsubscribe', 'group_resubscribe'];
+
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
@@ -18,14 +27,27 @@ class MessagesStoreController implements RequestHandlerInterface
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
-        return ['hello' => 'there'];
-        $this->logger->info('Hitting the endpoint');
-        $this->logger->info(
-            $request->getBody()
+        $notification = SendGridNotification::query()
+            ->where('send_grid_message_id', Arr::get($request->getParsedBody(), '0.sg_event_id'))
+            ->first();
+
+        if (! $notification) {
+            return new JsonResponse(['message' => 'SendGrid notification not found.'], $status = 404);
+        }
+
+        $notification->events()->createMany(
+            Collection::make($request->getParsedBody())->filter(function ($item) {
+                return in_array($item['event'], self::SEND_GRID_STATUSES);
+            })->map(function ($item) {
+                return [
+                    'event' => $item['event'],
+                    'timestamp' => $item['timestamp'],
+                    'created_at' => CarbonImmutable::now(),
+                    'updated_at' => CarbonImmutable::now(),
+                ];
+            })
         );
 
-        dd('handle stuff from there');
-        dd('test');
-        // TODO: Implement handle() method.
+        return new JsonResponse(['message' => 'SendGrid events saved'], $status = 201);
     }
 }

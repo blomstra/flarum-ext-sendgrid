@@ -47,7 +47,6 @@ class MessagesStoreControllerTest extends TestCase
     {
         return [
             'email' => 'jaggy@flarum.org',
-            // delivered, processed, deferred, open, click, bounce, dropped, spamreport, unsubscribe, group_unsubscribe, group_resubscribe
             'event' => 'delivered',
             'ip' => '192.168.1.1',
             'response' => '250 2.0.0 Ok: queued as C18F884A00',
