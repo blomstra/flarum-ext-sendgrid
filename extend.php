@@ -11,19 +11,17 @@
 
 namespace Blomstra\FlarumSendGrid;
 
-use Blomstra\FlarumSendGrid\Controllers\MessagesStoreController;
+use Blomstra\FlarumSendGrid\Controllers\EventsStoreController;
 use Flarum\Extend;
 
 return [
     (new Extend\Mail())->driver('sendgrid', SendGridDriver::class),
-    (new Extend\Csrf())->exemptRoute('flarum-sendgrid.hooks.messages.store'),
-    (new Extend\Routes('api'))
-        ->post('/flarum-sendgrid/hooks/messages', 'flarum-sendgrid.hooks.messages.store', MessagesStoreController::class),
-    //    (new Extend\Frontend('forum'))
-    //        ->js(__DIR__.'/js/dist/forum.js')
-    //        ->css(__DIR__.'/less/forum.less'),
-    //    (new Extend\Frontend('admin'))
-    //        ->js(__DIR__.'/js/dist/admin.js')
-    //        ->css(__DIR__.'/less/admin.less'),
-    //    new Extend\Locales(__DIR__.'/locale'),
+
+    (new Extend\Csrf())->exemptRoute('flarum-sendgrid.hooks.events.store'),
+
+    (new Extend\Routes('api'))->post(
+        '/flarum-sendgrid/hooks/events',
+        'flarum-sendgrid.hooks.events.store',
+        EventsStoreController::class,
+    ),
 ];

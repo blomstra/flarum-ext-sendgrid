@@ -7,9 +7,22 @@ use Illuminate\Database\Eloquent\Builder;
 
 class SendGridEvent extends AbstractModel
 {
-    const STATUSES = ['delivered', 'processed', 'bounce', 'dropped', 'deferred'];
+    const STATUSES = [
+        'processed',
+        'dropped',
+        'deferred',
+        'bounce',
+        'delivered',
+    ];
 
-    const ACTIONS = ['click', 'open', 'spamreport', 'unsubscribe', 'group_unsubscribe', 'group_resubscribe'];
+    const ENGAGEMENTS = [
+        'open',
+        'click',
+        'unsubscribe',
+        'spamreport',
+        'group_unsubscribe',
+        'group_resubscribe',
+    ];
 
     protected $table = 'send_grid_events';
 
@@ -18,5 +31,10 @@ class SendGridEvent extends AbstractModel
     public function scopeStatus(Builder $query): void
     {
         $query->whereIn('event', self::STATUSES);
+    }
+
+    public function scopeEngagement(Builder $query): void
+    {
+        $query->whereIn('event', self::ENGAGEMENTS);
     }
 }

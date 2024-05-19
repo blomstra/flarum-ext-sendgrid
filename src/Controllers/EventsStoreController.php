@@ -12,7 +12,7 @@ use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\RequestHandlerInterface;
 use Psr\Log\LoggerInterface;
 
-class MessagesStoreController implements RequestHandlerInterface
+class EventsStoreController implements RequestHandlerInterface
 {
     private LoggerInterface $logger;
 

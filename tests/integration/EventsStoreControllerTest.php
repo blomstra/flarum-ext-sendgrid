@@ -1,9 +1,8 @@
 <?php
 
-use Blomstra\FlarumSendGrid\Models\SendGridMessage;
 use Flarum\Testing\integration\TestCase;
 
-class MessagesStoreControllerTest extends TestCase
+class EventsStoreControllerTest extends TestCase
 {
     protected function setUp(): void
     {
@@ -17,16 +16,7 @@ class MessagesStoreControllerTest extends TestCase
     /** @test */
     public function it_saves_the_delivery_status_of_a_send_grid_notification()
     {
-        dd(
-            $this->database()->table('send_grid_notifications')->count()
-        );
-        var_dump(
-            SendGridMessage::all()->toArray()
-        );
-
-        var_dump(
-            $this->receiveWebhook()->getBody()
-        );
+        $this->receiveWebhook()->getBody();
     }
 
     public function receiveWebhook()
