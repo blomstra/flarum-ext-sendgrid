@@ -5,7 +5,6 @@ namespace Blomstra\FlarumSendGrid;
 use Flarum\Mail\DriverInterface;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Validation\Factory;
-use Illuminate\Mail\Transport\MailgunTransport;
 use Illuminate\Support\MessageBag;
 use SendGrid;
 use Swift_Transport;

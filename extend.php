@@ -11,16 +11,17 @@
 
 namespace Blomstra\FlarumSendGrid;
 
-use Blomstra\FlarumSendGrid\SendGridDriver;
+use Blomstra\FlarumSendGrid\Controllers\MessagesController;
 use Flarum\Extend;
 
 return [
     (new Extend\Mail())->driver('sendgrid', SendGridDriver::class),
-//    (new Extend\Frontend('forum'))
-//        ->js(__DIR__.'/js/dist/forum.js')
-//        ->css(__DIR__.'/less/forum.less'),
-//    (new Extend\Frontend('admin'))
-//        ->js(__DIR__.'/js/dist/admin.js')
-//        ->css(__DIR__.'/less/admin.less'),
-//    new Extend\Locales(__DIR__.'/locale'),
+    (new Extend\Routes('api'))->get('/flarum-sendgrid/hooks/messages', 'flarum-sendgrid.hooks.messages', MessagesController::class),
+    //    (new Extend\Frontend('forum'))
+    //        ->js(__DIR__.'/js/dist/forum.js')
+    //        ->css(__DIR__.'/less/forum.less'),
+    //    (new Extend\Frontend('admin'))
+    //        ->js(__DIR__.'/js/dist/admin.js')
+    //        ->css(__DIR__.'/less/admin.less'),
+    //    new Extend\Locales(__DIR__.'/locale'),
 ];

@@ -17,5 +17,6 @@ return Migration::createTable(
     function (Blueprint $table) {
         $table->increments('id');
         $table->string('send_grid_message_id');
+        $table->string('status')->comment('');
     }
 );

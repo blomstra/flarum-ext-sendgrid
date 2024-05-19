@@ -5,9 +5,8 @@ namespace Blomstra\FlarumSendGrid;
 use Illuminate\Mail\Transport\Transport;
 use SendGrid;
 use SendGrid\Mail\Mail;
-use Swift_Events_EventListener;
-use Swift_Mime_SimpleMessage;
 use SendGrid\Response;
+use Swift_Mime_SimpleMessage;
 
 class SendGridTransport extends Transport
 {
@@ -30,7 +29,7 @@ class SendGridTransport extends Transport
 
             $this->persistSendGridResponse($response);
         } catch (\Exception $e) {
-            echo 'Caught exception: '. $e->getMessage() ."\n";
+            echo 'Caught exception: '.$e->getMessage()."\n";
         }
 
         return 1;
@@ -44,15 +43,15 @@ class SendGridTransport extends Transport
 
         $this->setFrom($mail);
 
-        foreach ($message->getTo() as $email=> $name) {
+        foreach ($message->getTo() as $email => $name) {
             $mail->addTo($email);
         }
 
-        foreach ($message->getCc() as $email=> $name) {
+        foreach ($message->getCc() as $email => $name) {
             $mail->addCc($email, $name);
         }
 
-        foreach ($message->getBcc() as $email=> $name) {
+        foreach ($message->getBcc() as $email => $name) {
             $mail->addCc($email, $name);
         }
 
