@@ -18,12 +18,10 @@ class EventsStoreController implements RequestHandlerInterface
     {
         $events = $request->getParsedBody();
 
-        [$id] = explode('.', Arr::get($events, '0.sg_message_id'));
-
-        $bounced = collect($events)->where('event', 'bounce');
-
         $this->suspendAccountsWithInvalidEmails($events);
         $this->disableNotificationsForAccountsThatReportedSpam($events);
+
+        [$id] = explode('.', Arr::get($events, '0.sg_message_id'));
 
         $notification = SendGridMessage::query()
             ->where('external_id', $id)
