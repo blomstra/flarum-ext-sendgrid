@@ -7,7 +7,6 @@ class EventsStoreControllerTest extends TestCase
     protected function setUp(): void
     {
         parent::setUp();
-
         $this->prepareDatabase([
             'send_grid_notifications' => [],
         ]);

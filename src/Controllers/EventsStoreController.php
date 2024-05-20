@@ -25,8 +25,10 @@ class EventsStoreController implements RequestHandlerInterface
     {
         $this->logger->info(Arr::get($request->getParsedBody(), '0.sg_message_id'));
 
+        [$id] = explode('.', Arr::get($request->getParsedBody(), '0.sg_message_id'));
+
         $notification = SendGridMessage::query()
-            ->where('external_id', Arr::get($request->getParsedBody(), '0.sg_message_id'))
+            ->where('external_id', $id)
             ->first();
 
         if (! $notification) {
