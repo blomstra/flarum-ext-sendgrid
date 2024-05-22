@@ -1,7 +1,7 @@
-import ExtensionPage, {ExtensionPageAttrs} from "flarum/admin/components/ExtensionPage";
+import ExtensionPage, { ExtensionPageAttrs } from 'flarum/admin/components/ExtensionPage';
 
 export default class SendGridSettingsPage extends ExtensionPage {
-  content () {
+  content() {
     return (
       <div className="SendGridSettingsPage">
         <div className="container">
@@ -29,7 +29,6 @@ export default class SendGridSettingsPage extends ExtensionPage {
           </form>
         </div>
       </div>
-    )
+    );
   }
-
 }
