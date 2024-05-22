@@ -12,12 +12,15 @@
 namespace Blomstra\FlarumSendGrid;
 
 use Blomstra\FlarumSendGrid\Controllers\EventsStoreController;
+use Blomstra\FlarumSendGrid\Providers\SendGridServiceProvider;
 use Flarum\Extend;
 
 return [
     (new Extend\Mail())->driver('sendgrid', SendGridDriver::class),
 
     (new Extend\Csrf())->exemptRoute('flarum-sendgrid.hooks.events.store'),
+
+    (new Extend\ServiceProvider())->register(SendGridServiceProvider::class),
 
     (new Extend\Routes('api'))->post(
         '/flarum-sendgrid/hooks/events',

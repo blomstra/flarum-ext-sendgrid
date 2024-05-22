@@ -29,6 +29,8 @@ class SendGridTransport extends Transport
             );
 
             $this->persistSendGridResponse($response);
+
+            return $response;
         } catch (\Exception $e) {
             echo 'Caught exception: '.$e->getMessage()."\n";
         }
