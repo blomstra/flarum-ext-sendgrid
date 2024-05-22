@@ -2,11 +2,9 @@
 
 namespace Blomstra\FlarumSendGrid;
 
-use Blomstra\FlarumSendGrid\Models\SendGridMessage;
 use Illuminate\Mail\Transport\Transport;
 use SendGrid;
 use SendGrid\Mail\Mail;
-use SendGrid\Response;
 use Swift_Mime_SimpleMessage;
 
 class SendGridTransport extends Transport
@@ -27,8 +25,6 @@ class SendGridTransport extends Transport
             $response = $this->client->send(
                 $this->toSendGridMail($message)
             );
-
-            $this->persistSendGridResponse($response);
 
             return $response;
         } catch (\Exception $e) {
@@ -68,12 +64,5 @@ class SendGridTransport extends Transport
         [$email, $name] = $this->from;
 
         $mail->setFrom($email, $name);
-    }
-
-    private function persistSendGridResponse(Response $response)
-    {
-        SendGridMessage::create([
-            'external_id' => $response->headers($assoc = true)['X-Message-Id'],
-        ]);
     }
 }
