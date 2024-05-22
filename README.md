@@ -20,6 +20,13 @@ php flarum migrate
 php flarum cache:clear
 ```
 
+## Using the Webhook
+To allow webhook integration with SendGrid, add this to your SendGrid webhook.
+
+```
+https://your-url.test/api/flarum-sendgrid/hooks/events
+```
+
 ## Links
 
 - [Packagist](https://packagist.org/packages/blomstra/flarum-sendgrid)
