@@ -2,12 +2,9 @@
 
 namespace Blomstra\FlarumSendGrid\Controllers;
 
-use Blomstra\FlarumSendGrid\Models\SendGridMessage;
-use Carbon\CarbonImmutable;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -34,31 +31,8 @@ class EventsStoreController implements RequestHandlerInterface
             $this->disableNotificationsForAccountsThatReportedSpam($events);
         }
 
-        [$id] = explode('.', Arr::get($events, '0.sg_message_id'));
-
-        $notification = SendGridMessage::query()
-            ->where('external_id', $id)
-            ->first();
-
-        if (! $notification) {
-            return new JsonResponse([
-                'message' => 'SendGrid notification not found',
-            ], $status = 404);
-        }
-
-        $notification->events()->createMany(
-            Collection::make($request->getParsedBody())->map(function ($item) {
-                return [
-                    'event' => $item['event'],
-                    'timestamp' => $item['timestamp'],
-                    'created_at' => CarbonImmutable::now(),
-                    'updated_at' => CarbonImmutable::now(),
-                ];
-            })
-        );
-
         return new JsonResponse([
-            'message' => 'SendGrid events saved',
+            'message' => 'SendGrid events procsesed',
         ], $status = 201);
     }
 

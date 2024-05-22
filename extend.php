@@ -12,11 +12,10 @@
 namespace Blomstra\FlarumSendGrid;
 
 use Blomstra\FlarumSendGrid\Controllers\EventsStoreController;
-use Blomstra\FlarumSendGrid\Providers\SendGridServiceProvider;
 use Flarum\Extend;
 
 return [
-    new Extend\Locales(__DIR__ . '/locale'),
+    new Extend\Locales(__DIR__.'/locale'),
 
     (new Extend\Mail())->driver('sendgrid', SendGridDriver::class),
 
