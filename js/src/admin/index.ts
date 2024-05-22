@@ -1,5 +1,7 @@
 import app from 'flarum/admin/app';
+import SendGridSettingsPage from "./SendGridSettingsPage";
 
 app.initializers.add('blomstra/flarum-sendgrid', () => {
-  console.log('[blomstra/flarum-sendgrid] Hello, admin!');
+  app.extensionData.for('blomstra-sendgrid').registerPage(SendGridSettingsPage)
 });
+

@@ -4,6 +4,7 @@ namespace Blomstra\FlarumSendGrid\Controllers;
 
 use Blomstra\FlarumSendGrid\Models\SendGridMessage;
 use Carbon\CarbonImmutable;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Flarum\User\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -14,12 +15,24 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class EventsStoreController implements RequestHandlerInterface
 {
+    private SettingsRepositoryInterface $settings;
+
+    public function __construct(SettingsRepositoryInterface $settings)
+    {
+        $this->settings = $settings;
+    }
+
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
         $events = $request->getParsedBody();
 
-        $this->suspendAccountsWithInvalidEmails($events);
-        $this->disableNotificationsForAccountsThatReportedSpam($events);
+        if ($this->settings->get('blomstra-sendgrid.sendgrid_suspend_when_email_bounced')) {
+            $this->suspendAccountsWithInvalidEmails($events);
+        }
+
+        if ($this->settings->get('blomstra-sendgrid.sendgrid_disable_notifications_on_spam_report')) {
+            $this->disableNotificationsForAccountsThatReportedSpam($events);
+        }
 
         [$id] = explode('.', Arr::get($events, '0.sg_message_id'));
 

@@ -16,15 +16,21 @@ use Blomstra\FlarumSendGrid\Providers\SendGridServiceProvider;
 use Flarum\Extend;
 
 return [
+    new Extend\Locales(__DIR__ . '/locale'),
+
     (new Extend\Mail())->driver('sendgrid', SendGridDriver::class),
 
     (new Extend\Csrf())->exemptRoute('flarum-sendgrid.hooks.events.store'),
-
-    (new Extend\ServiceProvider())->register(SendGridServiceProvider::class),
 
     (new Extend\Routes('api'))->post(
         '/flarum-sendgrid/hooks/events',
         'flarum-sendgrid.hooks.events.store',
         EventsStoreController::class,
     ),
+
+    (new Extend\Frontend('forum'))
+        ->js(__DIR__.'/js/dist/forum.js'),
+
+    (new Extend\Frontend('admin'))
+        ->js(__DIR__.'/js/dist/admin.js'),
 ];
