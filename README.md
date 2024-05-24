@@ -1,8 +1,8 @@
 # Flarum-sendgrid
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/blomstra/flarum-sendgrid.svg)](https://packagist.org/packages/blomstra/flarum-sendgrid) [![Total Downloads](https://img.shields.io/packagist/dt/blomstra/flarum-sendgrid.svg)](https://packagist.org/packages/blomstra/flarum-sendgrid)
+![License](https://img.shields.io/badge/license-MIT-blue.svg) [![Latest Stable Version](https://img.shields.io/packagist/v/blomstra/sendgrid.svg)](https://packagist.org/packages/blomstra/sendgrid) [![Total Downloads](https://img.shields.io/packagist/dt/blomstra/sendgrid.svg)](https://packagist.org/packages/blomstra/sendgrid)
 
-A [Flarum](http://flarum.org) extension. 
+A [Flarum](http://flarum.org) extension that adds the Sendgrid driver to the mail page and allows sendgrid to suspend users whose email is bouncing and disable user notifications for email when these users mark the email as spam.
 
 ## Installation
 
