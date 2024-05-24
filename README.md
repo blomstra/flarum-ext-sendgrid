@@ -21,11 +21,13 @@ php flarum cache:clear
 ```
 
 ## Using the Webhook
-To allow webhook integration with SendGrid, add this to your SendGrid webhook.
+To allow webhook integration with SendGrid, add this to your SendGrid webhook at https://app.sendgrid.com/settings/mail_settings/webhook_settings
 
 ```
 https://your-url.test/api/flarum-sendgrid/hooks/events
 ```
+
+You should enable "Bounced" from Deliverability Data and "Spam Reports from Engagement Data.
 
 ## Links
 
