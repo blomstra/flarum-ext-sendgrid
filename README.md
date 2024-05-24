@@ -9,13 +9,13 @@ A [Flarum](http://flarum.org) extension.
 Install with composer:
 
 ```sh
-composer require blomstra/flarum-sendgrid:"*"
+composer require blomstra/sendgrid:"*"
 ```
 
 ## Updating
 
 ```sh
-composer update blomstra/flarum-sendgrid:"*"
+composer update blomstra/sendgrid:"*"
 php flarum migrate
 php flarum cache:clear
 ```
