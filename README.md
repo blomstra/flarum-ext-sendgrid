@@ -20,7 +20,13 @@ php flarum migrate
 php flarum cache:clear
 ```
 
-## Using the Webhook
+## Configuration
+
+### Select driver
+
+Make sure to switch to the sendgrid driver on the admin Mail page.
+
+### Set up the webhook
 To allow webhook integration with SendGrid, add this to your SendGrid webhook at https://app.sendgrid.com/settings/mail_settings/webhook_settings
 
 ```
