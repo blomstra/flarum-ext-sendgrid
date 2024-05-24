@@ -37,6 +37,6 @@ You should enable "Bounced" from Deliverability Data and "Spam Reports from Enga
 
 ## Links
 
-- [Packagist](https://packagist.org/packages/blomstra/flarum-sendgrid)
-- [GitHub](https://github.com/blomstra/flarum-sendgrid)
-- [Discuss](https://discuss.flarum.org/d/PUT_DISCUSS_SLUG_HERE)
+- [Packagist](https://packagist.org/packages/blomstra/sendgrid)
+- [GitHub](https://github.com/blomstra/flarum-ext-sendgrid)
+- [Discuss](https://discuss.flarum.org/d/34595-sendgrid-mail-driver)
