@@ -3,8 +3,10 @@
 namespace Blomstra\FlarumSendGrid\Controllers;
 
 use Flarum\Settings\SettingsRepositoryInterface;
+use Flarum\User\Event\Saving;
+use Flarum\User\Guest;
 use Flarum\User\User;
-use Illuminate\Support\Arr;
+use Illuminate\Contracts\Events\Dispatcher;
 use Laminas\Diactoros\Response\JsonResponse;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -12,12 +14,11 @@ use Psr\Http\Server\RequestHandlerInterface;
 
 class EventsStoreController implements RequestHandlerInterface
 {
-    private SettingsRepositoryInterface $settings;
-
-    public function __construct(SettingsRepositoryInterface $settings)
-    {
-        $this->settings = $settings;
-    }
+    public function __construct(
+        private SettingsRepositoryInterface $settings,
+        private Dispatcher $events
+    )
+    {}
 
     public function handle(ServerRequestInterface $request): ResponseInterface
     {
@@ -32,8 +33,8 @@ class EventsStoreController implements RequestHandlerInterface
         }
 
         return new JsonResponse([
-            'message' => 'SendGrid events procsesed',
-        ], $status = 201);
+            'message' => 'SendGrid events processed',
+        ], 201);
     }
 
     private function suspendAccountsWithInvalidEmails(array $events): void
@@ -43,9 +44,13 @@ class EventsStoreController implements RequestHandlerInterface
             ->unique('email')
             ->pluck('email');
 
-        User::whereIn('email', $emails->toArray())->update([
-            'suspended_until' => '2038-01-01 00:00:00',
-        ]);
+        User::query()
+            ->whereIn('email', $emails->toArray())
+            ->each(function (User $user) {
+                $user->is_email_confirmed = false;
+
+                $this->dispatchAndSave($user);
+            });
     }
 
     private function disableNotificationsForAccountsThatReportedSpam(array $events): void
@@ -55,12 +60,24 @@ class EventsStoreController implements RequestHandlerInterface
             ->unique('email')
             ->pluck('email');
 
-        User::whereIn('email', $emails->toArray())->get()->each(function (User $user) {
-            $user->preferences = collect($user->preferences)
-                ->map(fn ($value, $key) => str_starts_with($key, 'notify_') ? false : $value)
-                ->toArray();
+        User::query()
+            ->whereIn('email', $emails->toArray())
+            ->each(function (User $user) {
+                $user->preferences = collect($user->preferences)
+                    ->map(fn ($value, $key) => str_starts_with($key, 'notify_') ? false : $value)
+                    ->toArray();
 
-            $user->save();
-        });
+                $this->dispatchAndSave($user);
+            });
+    }
+
+    private function dispatchAndSave(User $user): void
+    {
+        // Dispatch even to trigger other logic for log auditing etc.
+        // Sadly this event requires an admin
+        $saving = new Saving($user, new Guest(), $user->getMutatedAttributes());
+        $this->events->dispatch($saving);
+
+        $user->save();
     }
 }
