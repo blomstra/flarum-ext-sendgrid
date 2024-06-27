@@ -19,6 +19,3 @@ blomstra-sendgrid:
 
     sendgrid_disable_notifications_on_spam_report_label: Remove notifications on spam report
     sendgrid_disable_notifications_on_spam_report_help: This will disable notifications when the user reported the emails sent from here as spam.
-
-  forum:
-    key: value
