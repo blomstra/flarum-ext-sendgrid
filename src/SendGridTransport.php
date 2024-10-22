@@ -42,15 +42,15 @@ class SendGridTransport extends Transport
 
         $this->setFrom($mail);
 
-        foreach ($message->getTo() as $email => $name) {
+        foreach ($message->getTo() ?? [] as $email => $name) {
             $mail->addTo($email);
         }
 
-        foreach ($message->getCc() as $email => $name) {
+        foreach ($message->getCc() ?? [] as $email => $name) {
             $mail->addCc($email, $name);
         }
 
-        foreach ($message->getBcc() as $email => $name) {
+        foreach ($message->getBcc() ?? [] as $email => $name) {
             $mail->addCc($email, $name);
         }
 
